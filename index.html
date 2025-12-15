@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Waiting</title>
+  <title>Hologram Waiting</title>
   <style>
     body {
       margin: 0;
@@ -15,9 +15,48 @@
       font-family: Arial, sans-serif;
       font-size: 24px;
     }
+
+    #model {
+      display: none;
+      color: white;
+      font-size: 28px;
+    }
   </style>
 </head>
 <body>
-  Waiting for QR scan...
+
+<div id="status">Waiting for QR scan...</div>
+<div id="model">✨ MODEL IS NOW ACTIVE ✨</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBUt1RiZW9bV8Ms5Em5jHF6kPAETIq2bpI",
+    authDomain: "hologram-qr.firebaseapp.com",
+    databaseURL: "https://hologram-qr-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "hologram-qr",
+    storageBucket: "hologram-qr.firebasestorage.app",
+    messagingSenderId: "75409918196",
+    appId: "1:75409918196:web:b571b6aadf938393c376a1"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  const db = firebase.database();
+  const ref = db.ref("showModel");
+
+  // LISTEN for changes
+  ref.on("value", (snapshot) => {
+    if (snapshot.val() === true) {
+      document.getElementById("status").style.display = "none";
+      document.getElementById("model").style.display = "block";
+    }
+  });
+</script>
+
 </body>
 </html>
