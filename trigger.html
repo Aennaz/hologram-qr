@@ -7,18 +7,34 @@
         body { 
             font-family: sans-serif; 
             text-align: center; 
-            padding-top: 50px; 
+            padding-top: 40px; 
             background-color: #f0f0f0;
         }
-        .message { 
+        .box { 
             background: white; 
-            padding: 20px; 
-            border-radius: 10px; 
+            padding: 30px; 
+            border-radius: 15px; 
             display: inline-block; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 80%;
+            max-width: 300px;
         }
-        h2 { color: green; margin: 0; }
-        p { color: #555; }
+        h2 { color: #333; margin: 0 0 10px 0; }
+        p { color: #666; margin-bottom: 20px; }
+        
+        /* A big, easy-to-tap button */
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+        }
+        button:active { background-color: #0056b3; }
     </style>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -26,9 +42,11 @@
 </head>
 <body>
 
-    <div class="message" id="statusBox">
-        <h2>Connecting...</h2>
-        <p>Please wait.</p>
+    <div class="box" id="statusBox">
+        <h2>Hologram Controller</h2>
+        <p>Tap below to start the show.</p>
+        
+        <button onclick="startHologram()">▶ START</button>
     </div>
 
     <script>
@@ -47,20 +65,25 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Send the "ON" signal immediately
-        db.ref('scan_signal').set(true)
-            .then(() => {
-                // 1. Show success message
-                document.getElementById('statusBox').innerHTML = "<h2>✅ Success!</h2><p>Opening site on both devices...</p>";
-                
-                // 2. Wait 1 second, then open the site on the phone too
-                setTimeout(function() {
-                    window.location.href = "https://www.educaplay.com/user/13901235-nur_maryam_binti_hiyah/";
-                }, 1500);
-            })
-            .catch((error) => {
-                document.getElementById('statusBox').innerHTML = "<h2 style='color:red'>Error</h2><p>" + error.message + "</p>";
-            });
+        function startHologram() {
+            // Update the text so user knows it's working
+            document.getElementById('statusBox').innerHTML = "<h2>🚀 Launching...</h2><p>Check the tablet!</p>";
+
+            // 1. Send signal to Tablet
+            db.ref('scan_signal').set(true)
+                .then(() => {
+                    // 2. Wait 1 second, then open site on Phone
+                    setTimeout(function() {
+                        window.location.href = "https://www.educaplay.com/user/13901235-nur_maryam_binti_hiyah/";
+                    }, 1000);
+                })
+                .catch((error) => {
+                    alert("Error: " + error.message);
+                });
+        }
+
+        // OPTIONAL: Uncomment the line below if you want it to TRY automatically
+        // startHologram(); 
     </script>
 </body>
 </html>
