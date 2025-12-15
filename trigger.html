@@ -50,8 +50,13 @@
         // Send the "ON" signal immediately
         db.ref('scan_signal').set(true)
             .then(() => {
-                // Show success message
-                document.getElementById('statusBox').innerHTML = "<h2>✅ Success!</h2><p>Look at the tablet.</p>";
+                // 1. Show success message
+                document.getElementById('statusBox').innerHTML = "<h2>✅ Success!</h2><p>Opening site on both devices...</p>";
+                
+                // 2. Wait 1 second, then open the site on the phone too
+                setTimeout(function() {
+                    window.location.href = "https://www.educaplay.com/user/13901235-nur_maryam_binti_hiyah/";
+                }, 1500);
             })
             .catch((error) => {
                 document.getElementById('statusBox').innerHTML = "<h2 style='color:red'>Error</h2><p>" + error.message + "</p>";
