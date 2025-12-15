@@ -1,75 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Hologram Waiting</title>
-  <style>
-    body {
-      margin: 0;
-      background: black;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: Arial, sans-serif;
-      font-size: 24px;
-    }
+    <title>Hologram Display</title>
+    <style>
+        /* Simple black background for hologram effect */
+        body { 
+            background-color: black; 
+            color: #333; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            overflow: hidden;
+        }
+        h1 { font-family: sans-serif; font-size: 20px; }
+    </style>
 
-    #model {
-      display: none;
-    
-    }
-  </style>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 </head>
 <body>
+    <h1>Hologram Ready...</h1>
 
-<div id="status" style="text-align:center;">
-  <p>Scan QR to activate hologram</p>
-  <img src="qr.png" style="width:200px; height:200px;">
-</div>
-  
-<div id="model" style="width:100vw; height:100vh;">
-  <iframe
-    src="https://sketchfab.com/models/e34fdaaffee64f098c68546e3bc12188/embed?autostart=1&ui_infos=0&ui_controls=0&ui_stop=0"
-    frameborder="0"
-    allow="autoplay; fullscreen"
-    allowfullscreen
-    style="width:100%; height:100%; border:0;">
-  </iframe>
-</div>
+    <script>
+        // YOUR FIREBASE CONFIGURATION
+        const firebaseConfig = {
+          apiKey: "AIzaSyBUt1RiZW9bV8Ms5Em5jHF6kPAETIq2bpI",
+          authDomain: "hologram-qr.firebaseapp.com",
+          databaseURL: "https://hologram-qr-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "hologram-qr",
+          storageBucket: "hologram-qr.firebasestorage.app",
+          messagingSenderId: "75409918196",
+          appId: "1:75409918196:web:b571b6aadf938393c376a1",
+          measurementId: "G-4X8Y3NW42J"
+        };
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyBUt1RiZW9bV8Ms5Em5jHF6kPAETIq2bpI",
-    authDomain: "hologram-qr.firebaseapp.com",
-    databaseURL: "https://hologram-qr-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "hologram-qr",
-    storageBucket: "hologram-qr.firebasestorage.app",
-    messagingSenderId: "75409918196",
-    appId: "1:75409918196:web:b571b6aadf938393c376a1"
-  };
+        // 1. Reset the signal to "OFF" when the tablet loads
+        db.ref('scan_signal').set(false);
 
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-
-  const db = firebase.database();
-  const ref = db.ref("showModel");
-
-  // LISTEN for changes
-  ref.on("value", (snapshot) => {
-    if (snapshot.val() === true) {
-      document.getElementById("status").style.display = "none";
-      document.getElementById("model").style.display = "block";
-    }
-  });
-</script>
-
+        // 2. Listen for the signal to turn "ON"
+        db.ref('scan_signal').on('value', (snapshot) => {
+            const signal = snapshot.val();
+            
+            // If the signal becomes true (someone scanned!), go to the site
+            if (signal === true) {
+                window.location.href = "https://www.educaplay.com/user/13901235-nur_maryam_binti_hiyah/";
+            }
+        });
+    </script>
 </body>
 </html>
-
-
