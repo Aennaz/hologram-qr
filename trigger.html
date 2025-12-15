@@ -2,61 +2,32 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Hologram Control</title>
+  <title>Trigger Model</title>
   <style>
     body {
       margin: 0;
       background: black;
       color: white;
-      font-family: Arial, sans-serif;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
-      gap: 20px;
-    }
-
-    button {
-      width: 220px;
-      padding: 15px;
-      font-size: 18px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .show {
-      background: #00c853;
-      color: black;
-    }
-
-    .reset {
-      background: #d50000;
-      color: white;
-    }
-
-    #status {
-      margin-top: 20px;
-      font-size: 16px;
-      opacity: 0.8;
+      font-family: Arial, sans-serif;
+      font-size: 22px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
 
-<button class="show" onclick="showModel()">▶ SHOW HOLOGRAM</button>
-<button class="reset" onclick="resetModel()">⏹ RESET</button>
+Activating hologram model...
 
-<div id="status">Status: Loading...</div>
-
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
   const firebaseConfig = {
-    apiKey: "AIzaSyBUt1RiZW9bV8Ms5EmjHF6kPAETIq2bpI",
+    apiKey: "AIzaSyBUt1RiZW9bV8Ms5Em5jHF6kPAETIq2bpI",
     authDomain: "hologram-qr.firebaseapp.com",
     databaseURL: "https://hologram-qr-default-rtdb.asia-southeast1.firebasedatabase.app",
     projectId: "hologram-qr",
@@ -68,25 +39,7 @@
   firebase.initializeApp(firebaseConfig);
 
   const db = firebase.database();
-  const ref = db.ref("showModel");
-
-  // BUTTON ACTIONS
-  function showModel() {
-    ref.set(true);
-  }
-
-  function resetModel() {
-    ref.set(false);
-  }
-
-  // LIVE STATUS LISTENER
-  ref.on("value", (snapshot) => {
-    if (snapshot.val() === true) {
-      document.getElementById("status").innerText = "Status: ACTIVE";
-    } else {
-      document.getElementById("status").innerText = "Status: WAITING";
-    }
-  });
+  db.ref("showModel").set(true);
 </script>
 
 </body>
