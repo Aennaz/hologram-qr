@@ -1,46 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Trigger Model</title>
-  <style>
-    body {
-      margin: 0;
-      background: black;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: Arial, sans-serif;
-      font-size: 22px;
-      text-align: center;
-    }
-  </style>
+    <title>Scanner Control</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { 
+            font-family: sans-serif; 
+            text-align: center; 
+            padding-top: 50px; 
+            background-color: #f0f0f0;
+        }
+        .message { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            display: inline-block; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h2 { color: green; margin: 0; }
+        p { color: #555; }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 </head>
 <body>
 
-Activating hologram model...
+    <div class="message" id="statusBox">
+        <h2>Connecting...</h2>
+        <p>Please wait.</p>
+    </div>
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script>
+        // YOUR FIREBASE CONFIGURATION
+        const firebaseConfig = {
+          apiKey: "AIzaSyBUt1RiZW9bV8Ms5Em5jHF6kPAETIq2bpI",
+          authDomain: "hologram-qr.firebaseapp.com",
+          databaseURL: "https://hologram-qr-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "hologram-qr",
+          storageBucket: "hologram-qr.firebasestorage.app",
+          messagingSenderId: "75409918196",
+          appId: "1:75409918196:web:b571b6aadf938393c376a1",
+          measurementId: "G-4X8Y3NW42J"
+        };
 
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyBUt1RiZW9bV8Ms5Em5jHF6kPAETIq2bpI",
-    authDomain: "hologram-qr.firebaseapp.com",
-    databaseURL: "https://hologram-qr-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "hologram-qr",
-    storageBucket: "hologram-qr.firebasestorage.app",
-    messagingSenderId: "75409918196",
-    appId: "1:75409918196:web:b571b6aadf938393c376a1"
-  };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-  firebase.initializeApp(firebaseConfig);
-
-  const db = firebase.database();
-  db.ref("showModel").set(true);
-</script>
-
+        // Send the "ON" signal immediately
+        db.ref('scan_signal').set(true)
+            .then(() => {
+                // Show success message
+                document.getElementById('statusBox').innerHTML = "<h2>✅ Success!</h2><p>Look at the tablet.</p>";
+            })
+            .catch((error) => {
+                document.getElementById('statusBox').innerHTML = "<h2 style='color:red'>Error</h2><p>" + error.message + "</p>";
+            });
+    </script>
 </body>
 </html>
